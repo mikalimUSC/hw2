@@ -39,7 +39,6 @@ std::set<std::string> parseStringToWords(string rawWords) {
                 if (newword.size() >= 2) {
                     wordset.insert(newword);
                 }
-                
                 startindex = i + 1; // Move startindex to the character after punctuation
             }
             
@@ -64,7 +63,6 @@ std::set<std::string> parseStringToWords(string rawWords) {
 /**************************************************
  * COMPLETED - You may use the following functions
  **************************************************/
-
 // Used from http://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring
 // trim from start
 std::string &ltrim(std::string &s) {

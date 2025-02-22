@@ -28,7 +28,7 @@ std::set<std::string> parseStringToWords(string rawWords) {
         int startindex = 0;
         int substrlen = 0;
         string newword = "";
-        int i = 0;
+        uint i = 0;
         
         while (i <= rawWords.size()) { // Change to <= to handle the last word
             if (i == rawWords.size() || rawWords[i] == ' ' || 

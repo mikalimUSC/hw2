@@ -4,6 +4,14 @@
 #include "product.h"
 
 MyDataStore::~MyDataStore() {
+    for (auto& val : users) {
+        delete val.second;
+    }
+
+    for (auto& val : data) {
+        delete val.second;
+    }
+
 }
 
 void MyDataStore::addProduct(Product* p) {

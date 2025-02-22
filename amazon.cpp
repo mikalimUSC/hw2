@@ -9,6 +9,7 @@
 #include "product.h"
 #include "db_parser.h"
 #include "product_parser.h"
+#include "book.h"
 #include "util.h"
 
 using namespace std;
@@ -86,9 +87,11 @@ int main(int argc, char* argv[])
                 vector<string> terms;
                 while(ss >> term) {
                     term = convToLower(term);
+      
                     terms.push_back(term);
                 }
                 hits = ds.search(terms, 1);
+     
                 displayProducts(hits);
             }
             else if ( cmd == "QUIT") {
@@ -102,7 +105,7 @@ int main(int argc, char* argv[])
             }
               else if(cmd == "ADD"){
                 string username, hit_index_str;
-                int hit_index;
+                uint hit_index;
                 if(!(ss >> username >> hit_index_str)){
                     cout << "Invalid request" << endl;
                     continue;
@@ -125,7 +128,7 @@ int main(int argc, char* argv[])
                 if(cart.empty()){
                     cout << "No items in the cart." << endl;
                 } else {
-                    for(int i = 0; i < cart.size(); ++i){
+                    for(size_t i = 0; i < cart.size(); ++i){
                         cout << "Item " << (i + 1) << ": " << cart[i] << endl;
                     }
                 }
@@ -138,13 +141,16 @@ int main(int argc, char* argv[])
                 }
                 ds.buyCart(convToLower(username));
             }
-        }
+            }
             else {
                 cout << "Unknown command" << endl;
-            }
-              return 0;
+            } 
+             
+    
         }
-  
+    delete productSectionParser;
+    delete userSectionParser;
+     return 0;
 } 
 
 

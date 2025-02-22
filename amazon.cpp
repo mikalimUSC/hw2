@@ -131,11 +131,9 @@ int main(int argc, char* argv[])
                     continue;
                 }
                 vector<string> cart = ds.getCart(convToLower(username));
-                if(cart.empty()){
-                    cout << "No items in the cart." << endl;
-                } else {
+                if(!cart.empty()){
                     for(size_t i = 0; i < cart.size(); ++i){
-                        cout << "Item " << (i + 1) << ": " << cart[i] << endl;
+                        cout << (i + 1) << " " << cart[i] << endl;
                     }
                 }
             }

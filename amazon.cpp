@@ -108,6 +108,7 @@ int main(int argc, char* argv[])
                 done = true;
             }
               else if(cmd == "ADD"){
+       
                 string username, hit_index_str;
                 uint hit_index;
                 if(!(ss >> username >> hit_index_str)){
@@ -121,6 +122,7 @@ int main(int argc, char* argv[])
                 }
                 Product* product = hits[hit_index - 1];
                 ds.addToCart(convToLower(username), product->getName());
+
             }
             else if(cmd == "VIEWCART"){
                 string username;

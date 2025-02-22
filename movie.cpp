@@ -17,7 +17,11 @@ std::set<std::string> Movie::keywords() const {
     std::set<std::string> keys = parseStringToWords(name_);
 
     keys.insert(genre_);
-    keys.insert("movie");
+    for (const string& word : keys) {
+        string lowerCaseWord = word;
+        transform(lowerCaseWord.begin(), lowerCaseWord.end(), lowerCaseWord.begin(),::tolower);
+        keys.insert(lowerCaseWord);
+    }
     return keys;
 }
 

@@ -79,6 +79,7 @@ int main(int argc, char* argv[])
                     term = convToLower(term);
                     terms.push_back(term);
                 }
+        
                 hits = ds.search(terms, 0);
                 displayProducts(hits);
             }

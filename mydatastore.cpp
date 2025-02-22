@@ -26,10 +26,13 @@ void MyDataStore::addUser(User* u) {
 }
 
 std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int type) {
+
     std::set<std::string> results;
     for (auto& term : terms) {
         if (keys.find(term) != keys.end()) {
+          
             for (const auto& productName : keys[term]) {
+
                 results.insert(productName);
             }
         }
@@ -61,6 +64,7 @@ std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int t
             }
         }
     }
+
 
     return foundProducts;
 }

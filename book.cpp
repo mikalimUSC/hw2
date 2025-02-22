@@ -20,7 +20,12 @@ std::set<std::string> Book::keywords() const {
     for (const string& word : namekeys) {
         keys.insert(word);
     }
-    keys.insert("book");
+    
+    for (const string& word : keys) {
+        string lowerCaseWord = word;
+        transform(lowerCaseWord.begin(), lowerCaseWord.end(), lowerCaseWord.begin(),::tolower);
+        keys.insert(lowerCaseWord);
+    }
     return keys;
 }
 

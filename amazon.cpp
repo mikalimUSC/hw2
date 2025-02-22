@@ -99,9 +99,12 @@ int main(int argc, char* argv[])
                 string filename;
                 if(ss >> filename) {
                     ofstream ofile(filename.c_str());
+             
                     ds.dump(ofile);
+           
                     ofile.close();
                 }
+                  
                 done = true;
             }
               else if(cmd == "ADD"){
@@ -149,9 +152,9 @@ int main(int argc, char* argv[])
              
     
         }
-    delete productSectionParser;
-    delete userSectionParser;
-     return 0;
+
+
+    return 0;
 } 
 
 

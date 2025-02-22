@@ -5,6 +5,7 @@
 #include <vector>
 #include <iomanip>
 #include <algorithm>
+#include "mydatastore.h"
 #include "product.h"
 #include "db_parser.h"
 #include "product_parser.h"
@@ -29,7 +30,7 @@ int main(int argc, char* argv[])
      * Declare your derived DataStore object here replacing
      *  DataStore type to your derived type
      ****************/
-    DataStore ds;
+    MyDataStore ds;
 
 
 
@@ -99,19 +100,55 @@ int main(int argc, char* argv[])
                 }
                 done = true;
             }
-	    /* Add support for other commands here */
-
-
-
-
+              else if(cmd == "ADD"){
+                string username, hit_index_str;
+                int hit_index;
+                if(!(ss >> username >> hit_index_str)){
+                    cout << "Invalid request" << endl;
+                    continue;
+                }
+                hit_index = stoi(hit_index_str);
+                if(hit_index < 1 || hit_index > hits.size()){
+                    cout << "Invalid request" << endl;
+                    continue;
+                }
+                Product* product = hits[hit_index - 1];
+                ds.addToCart(convToLower(username), product->getName());
+            }
+            else if(cmd == "VIEWCART"){
+                string username;
+                if(!(ss >> username)){
+                    cout << "Invalid request" << endl;
+                    continue;
+                }
+                vector<string> cart = ds.getCart(convToLower(username));
+                if(cart.empty()){
+                    cout << "No items in the cart." << endl;
+                } else {
+                    for(int i = 0; i < cart.size(); ++i){
+                        cout << "Item " << (i + 1) << ": " << cart[i] << endl;
+                    }
+                }
+            }
+            else if(cmd == "BUYCART"){
+                string username;
+                if(!(ss >> username)){
+                    cout << "Invalid request" << endl;
+                    continue;
+                }
+                ds.buyCart(convToLower(username));
+            }
+        }
             else {
                 cout << "Unknown command" << endl;
             }
+              return 0;
         }
+  
+} 
 
-    }
-    return 0;
-}
+
+
 
 void displayProducts(vector<Product*>& hits)
 {
@@ -128,3 +165,4 @@ void displayProducts(vector<Product*>& hits)
         resultNo++;
     }
 }
+

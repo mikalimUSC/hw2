@@ -1,0 +1,55 @@
+<products> 
+book
+10 Art Projects For Kids
+15
+1
+ISBN1220112
+Johnny Smith
+movie
+Blair Witch Project
+25.5
+1
+Horror
+R
+book
+Catcher in the Rye
+15
+2
+ISBN1001222
+J. D. Salinger
+movie
+Millenium Actress
+25.5
+1
+Drama
+PG-13
+book
+Project Hail Mary
+15
+4
+ISBN100000
+Andy Weir
+book
+Project Minotaur
+15
+1
+ISBN100102
+Johnny Quest
+movie
+There Will Be Blood
+25.5
+1
+Drama
+R
+movie
+Wolfwalkers
+20.5
+3
+Kids
+PG
+</products> 
+<users> 
+Kae 12 3
+Mika 20 1
+Nat 30 0
+</users> 

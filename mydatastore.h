@@ -1,0 +1,52 @@
+#ifndef MYDATASTORE_H
+#define MYDATASTORE_H
+#include <string>
+#include <set>
+#include <vector>
+#include <map>
+#include "product.h"
+#include "user.h"
+#include "datastore.h"
+
+using namespace std;
+
+class MyDataStore : public DataStore {
+public:
+    virtual ~MyDataStore();
+
+    /**
+     * Adds a product to the data store
+     */
+    virtual void addProduct(Product* p);
+
+    /**
+     * Adds a user to the data store
+     */
+    virtual void addUser(User* u);
+
+    void addProductToCart(const std::string& username, const std::string& productName);
+    std::vector<std::string> getCart(const std::string& username) const;
+    bool buyCart(const std::string& username);
+    void addToCart(const std::string& username, const std::string& productName) ;
+    /**
+     * Performs a search of products whose keywords match the given "terms"
+     *  type 0 = AND search (intersection of results for each term) while
+     *  type 1 = OR search (union of results for each term)
+     */
+    virtual std::vector<Product*> search(std::vector<std::string>& terms, int type);
+
+    /**
+     * Reproduce the database file from the current Products and User values
+     */
+    virtual void dump(std::ostream& ofile);
+
+    private:
+    map<string,Product*> data; //key is the product name, value is the prodocut object itself
+    map<string, set<string> > keys; //map key is the productname, value is the set contains all keywords
+    map<string,User*> users;
+    map<string, vector<string>> carts;
+
+
+};
+
+#endif

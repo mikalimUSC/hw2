@@ -14,6 +14,11 @@ std::string convToLower(std::string src)
 
 /** Complete the code to convert a string containing a rawWord
     to a set of words based on the criteria given in the assignment **/
+#include <string>
+#include <set>
+
+using namespace std;
+
 std::set<std::string> parseStringToWords(string rawWords) {
     set<string> wordset;
 
@@ -25,30 +30,19 @@ std::set<std::string> parseStringToWords(string rawWords) {
         string newword = "";
         int i = 0;
         
-        while (i < rawWords.size()) {
-            // cout<< "start of loop. rawWords is " << rawWords<<endl;
-            
-            if (rawWords[i] == ';' || rawWords[i] == '.' || rawWords[i] == ',' || 
+        while (i <= rawWords.size()) { // Change to <= to handle the last word
+            if (i == rawWords.size() || rawWords[i] == ' ' || 
+                rawWords[i] == ';' || rawWords[i] == '.' || rawWords[i] == ',' || 
                 rawWords[i] == ':' || rawWords[i] == '\'') {
                 
                 substrlen = i - startindex;
-                // cout << "substrlen is " << substrlen << ", startindex is " << startindex << endl;
                 newword = rawWords.substr(startindex, substrlen);
-                // cout << "newword is " << newword << endl;
                 
                 if (newword.size() >= 2) {
                     wordset.insert(newword);
                 }
-                startindex = i + 1; // Move startindex to the character after punctuation
-            }
-            
-            if (i == rawWords.size() - 1 && rawWords.size() >= 2) {
-                newword = rawWords.substr(startindex); // Capture the last word
-                // cout << "last word is " << newword << endl;
                 
-                if (newword.size() >= 2) {
-                    wordset.insert(newword);
-                }
+                startindex = i + 1; // Move startindex to the character after space or punctuation
             }
             
             i++;
@@ -57,6 +51,7 @@ std::set<std::string> parseStringToWords(string rawWords) {
     
     return wordset;
 }
+
 
 
 

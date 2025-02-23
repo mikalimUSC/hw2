@@ -69,19 +69,20 @@ std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int t
     return foundProducts;
 }
 
-void MyDataStore::addToCart(const std::string& username, const std::string& productName) {
+void MyDataStore::addToCart(const std::string& username, Product* product) {
     if (users.find(username) == users.end()) {
        // std::cout << "User not found!" << std::endl;
         return;
     }
-    if (data.find(productName) == data.end()) {
+    const std::string productName = product->getName();  // Get the product name
+    
+    if (data.find(productName) == data.end()) {  // Check using product name
         //std::cout << "Product not found!" << std::endl;
         return;
     }
-    carts[username].push_back(productName);
+    carts[username].push_back(product);  // Add Product* to cart
 }
-
-std::vector<std::string> MyDataStore::getCart(const std::string& username) const {
+std::vector<Product*> MyDataStore::getCart(const std::string& username) const {
     if (carts.find(username) == carts.end()) {
         return {};
     }
@@ -93,21 +94,24 @@ bool MyDataStore::buyCart(const std::string& username) {
        // std::cout << "User cart not found." << std::endl;
         return false;
     }
-
-    for (const auto& productName : carts[username]) {
-        if (!data[productName]->getQty() == 0) { 
-           // std::cout << "Product " << productName << " is out of stock." << std::endl;
+    for (const auto& productPtr : carts[username]) {  
+        const std::string productName = productPtr->getName();  // Get the product name
+        
+        if (!data[productName]->getQty()) { 
+            // std::cout << "Product " << productName << " is out of stock." << std::endl;
             return false;
         }
     }
 
-    for (const auto& productName : carts[username]) {
-        data[productName]->subtractQty(1);
+    for (const auto& productPtr : carts[username]) {
+        const std::string productName = productPtr->getName();  // Get the product name
+        
+        data[productName]->subtractQty(1);  // Correct: use product name as the key
     }
     carts.erase(username);
-
     return true;
 }
+
 
 void MyDataStore::dump(std::ostream& ofile) {
     ofile << "<products>\n";

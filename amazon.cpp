@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
                     continue;
                 }
                 Product* product = hits[hit_index - 1];
-                ds.addToCart(convToLower(username), product->getName());
+                ds.addToCart(convToLower(username), product);
 
             }
             else if(cmd == "VIEWCART"){
@@ -130,10 +130,10 @@ int main(int argc, char* argv[])
                     cout << "Invalid request" << endl;
                     continue;
                 }
-                vector<string> cart = ds.getCart(convToLower(username));
+                vector<Product*> cart = ds.getCart(convToLower(username));
                 if(!cart.empty()){
                     for(size_t i = 0; i < cart.size(); ++i){
-                        cout << (i + 1) << " " << cart[i] << endl;
+                        cout << (i + 1) << " " << cart[i]->getName() << endl;
                     }
                 }
             }
@@ -152,7 +152,6 @@ int main(int argc, char* argv[])
              
     
         }
-
 
     return 0;
 } 

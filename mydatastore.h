@@ -24,10 +24,10 @@ public:
      */
     virtual void addUser(User* u);
 
-    void addProductToCart(const std::string& username, const std::string& productName);
-    std::vector<std::string> getCart(const std::string& username) const;
+;
+   std::vector<Product*> getCart(const std::string& username) const;
     bool buyCart(const std::string& username);
-    void addToCart(const std::string& username, const std::string& productName) ;
+    void addToCart(const std::string& username, Product* product) ;
     /**
      * Performs a search of products whose keywords match the given "terms"
      *  type 0 = AND search (intersection of results for each term) while
@@ -44,7 +44,7 @@ public:
     map<string,Product*> data; //key is the product name, value is the prodocut object itself
     map<string, set<string> > keys; //map key is the productname, value is the set contains all keywords
     map<string,User*> users;
-    map<string, vector<string>> carts;
+    map<string, vector<Product*>> carts;
 
 
 };

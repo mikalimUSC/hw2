@@ -29,29 +29,32 @@ void MyDataStore::addUser(User* u) {
 std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int type) {
 
     std::set<std::string> results;
-    for (auto& term : terms) {
-        if (keys.find(term) != keys.end()) {
+    std::vector<std::string>::iterator term_iterator;
+    for (term_iterator = terms.begin(); term_iterator != terms.end(); ++term_iterator) {
+        if (keys.find(*term_iterator) != keys.end()) {
           
-            for (const auto& productName : keys[term]) {
+            std::set<std::string>::iterator productName_iterator;
+            for (productName_iterator = keys[*term_iterator].begin(); productName_iterator != keys[*term_iterator].end(); ++productName_iterator) {
 
-                results.insert(productName);
+                results.insert(*productName_iterator);
             }
         }
     }
 
     std::vector<Product*> foundProducts;
     if (type == 1) { // OR search, using UNION
-        for (auto& productName : results) {
-            if (data.find(productName) != data.end()) {
-                foundProducts.push_back(data[productName]);
+        std::set<std::string>::iterator productName_iterator;
+        for (productName_iterator = results.begin(); productName_iterator != results.end(); ++productName_iterator) {
+            if (data.find(*productName_iterator) != data.end()) {
+                foundProducts.push_back(data[*productName_iterator]);
             }
         }
     } else if (type == 0) { // AND search, using INTERSECTION!!!
         std::set<std::string> intersectionResults = results;
-        for (auto& term : terms) {
+        for (term_iterator = terms.begin(); term_iterator != terms.end(); ++term_iterator) {
             std::set<std::string> currentSet;
-            if (keys.find(term) != keys.end()) {
-                currentSet = keys[term];
+            if (keys.find(*term_iterator) != keys.end()) {
+                currentSet = keys[*term_iterator];
             }
             std::set<std::string> tempIntersection;
             std::set_intersection(intersectionResults.begin(), intersectionResults.end(),
@@ -59,9 +62,10 @@ std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int t
                                    std::inserter(tempIntersection, tempIntersection.begin()));
             intersectionResults = std::move(tempIntersection);
         }
-        for (auto& productName : intersectionResults) {
-            if (data.find(productName) != data.end()) {
-                foundProducts.push_back(data[productName]);
+        std::set<std::string>::iterator productName_iterator;
+        for (productName_iterator = intersectionResults.begin(); productName_iterator != intersectionResults.end(); ++productName_iterator) {
+            if (data.find(*productName_iterator) != data.end()) {
+                foundProducts.push_back(data[*productName_iterator]);
             }
         }
     }
@@ -69,6 +73,7 @@ std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int t
 
     return foundProducts;
 }
+
 
 void MyDataStore::addToCart(const std::string& username, Product* product) {
     if (users.find(username) == users.end()) {
@@ -97,44 +102,46 @@ bool MyDataStore::buyCart(const std::string& username) {
     }
 
     bool purchaseSuccessful = true;
-    
-    for (const auto& productPtr : carts[username]) {
-        const std::string productName = productPtr->getName(); 
-        
-        if (!data[productName]->getQty()) { 
-            // std::cout << "Product " << productName << "out of stock" << std::endl;
+
+    std::vector<Product*>::iterator product_iterator;
+    for (product_iterator = carts[username].begin(); product_iterator != carts[username].end(); ++product_iterator) {
+        const std::string productName = (*product_iterator)->getName();
+
+        if (!data[productName]->getQty()) {
+            // std::cout << "Product " << productName << " out of stock" << std::endl;
             purchaseSuccessful = false;
-            continue;  
+            continue;
         }
         User* userPtr = users.find(username)->second;
-        if (userPtr->getBalance() < productPtr->getPrice()) {
+        if (userPtr->getBalance() < (*product_iterator)->getPrice()) {
             // std::cout << "NO BALANCEEE " << productName << "." << std::endl;
             purchaseSuccessful = false;
-            continue;  
+            continue;
         }
 
-  
-        data[productName]->subtractQty(1);  
-        userPtr->deductAmount(productPtr->getPrice());  
-        carts[username].erase(carts[username].begin());
+        data[productName]->subtractQty(1);
+        userPtr->deductAmount((*product_iterator)->getPrice());
+        carts[username].erase(product_iterator);
     }
     return purchaseSuccessful;
 }
 
-const map<string, User*>& MyDataStore::getUsers(){
+const map<string, User*>& MyDataStore::getUsers() {
     return users;
 }
 
 void MyDataStore::dump(std::ostream& ofile) {
     ofile << "<products>\n";
-    for (auto& pair : products) {
-        pair->dump(ofile);
+    std::vector<Product*>::iterator product_iterator;
+    for (product_iterator = products.begin(); product_iterator != products.end(); ++product_iterator) {
+        (*product_iterator)->dump(ofile);
     }
     ofile << "</products>\n";
 
     ofile << "<users>\n";
-    for (auto& pair : users) {
-        pair.second->dump(ofile);
+    std::map<string, User*>::iterator user_iterator;
+    for (user_iterator = users.begin(); user_iterator != users.end(); ++user_iterator) {
+        user_iterator->second->dump(ofile);
     }
     ofile << "</users>\n";
 }

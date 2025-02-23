@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
                     cout << "Invalid request" << endl;
                     continue;
                 }
-                cout << " afh" << endl;
+
                 hit_index = stoi(hit_index_str);
                 if(hit_index < 1 || hit_index > hits.size()){
                     cout << "Invalid request" << endl;

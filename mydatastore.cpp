@@ -4,14 +4,15 @@
 #include "product.h"
 
 MyDataStore::~MyDataStore() {
-    for (auto& val : users) {
-        delete val.second;
+    std::map<std::string, User*>::iterator user_iterator;
+    for (user_iterator = users.begin(); user_iterator != users.end(); ++user_iterator) {
+        delete user_iterator->second;
     }
 
-    for (auto& val : data) {
-        delete val.second;
+    std::map<std::string, Product*>::iterator data_iterator;
+    for (data_iterator = data.begin(); data_iterator != data.end(); ++data_iterator) {
+        delete data_iterator->second;
     }
-
 }
 
 void MyDataStore::addProduct(Product* p) {
@@ -69,8 +70,6 @@ std::vector<Product*> MyDataStore::search(std::vector<std::string>& terms, int t
             }
         }
     }
-
-
     return foundProducts;
 }
 
@@ -95,26 +94,27 @@ std::vector<Product*> MyDataStore::getCart(const std::string& username) const {
     return carts.at(username);
 }
 
-
 bool MyDataStore::buyCart(const std::string& username) {
     if (carts.find(username) == carts.end()) {
         return false;
     }
 
     bool purchaseSuccessful = true;
-    std::vector<Product*> cartCopy = carts[username];
-    for (Product* product : cartCopy) {
+    for (std::vector<Product*>::iterator it = carts[username].begin(); it != carts[username].end();) {
+        Product* product = *it;
         const std::string productName = product->getName();
 
         if (!data[productName]->getQty()) {
             // std::cout << "Product " << productName << " out of stock" << std::endl;
             purchaseSuccessful = false;
+            ++it;
             continue;
         }
         User* userPtr = users.find(username)->second;
         if (userPtr->getBalance() < product->getPrice()) {
             // std::cout << "NO BALANCEEE " << productName << "." << std::endl;
             purchaseSuccessful = false;
+            ++it;
             continue;
         }
 
@@ -122,7 +122,7 @@ bool MyDataStore::buyCart(const std::string& username) {
         userPtr->deductAmount(product->getPrice());
         
    
-        carts[username].erase(std::remove(carts[username].begin(), carts[username].end(), product), carts[username].end());
+        it = carts[username].erase(it);
     }
 
     return purchaseSuccessful;

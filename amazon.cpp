@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
                 }
                 username = convToLower(username);
 
-                cout << "Testline" << endl;
+           
                 const map<string, User*>& users = ds.getUsers();
                 if (users.find(username) == users.end()) {
                     cout << "Invalid username" << endl;
@@ -172,7 +172,7 @@ int main(int argc, char* argv[])
                 }
           
                 ds.buyCart(convToLower(username));
-                cout << "Testline 2"<<endl;
+        
             }
             }
             else {

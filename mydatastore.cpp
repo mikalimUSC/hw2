@@ -102,10 +102,9 @@ bool MyDataStore::buyCart(const std::string& username) {
     }
 
     bool purchaseSuccessful = true;
-
-    std::vector<Product*>::iterator product_iterator;
-    for (product_iterator = carts[username].begin(); product_iterator != carts[username].end(); ++product_iterator) {
-        const std::string productName = (*product_iterator)->getName();
+    std::vector<Product*> cartCopy = carts[username];
+    for (Product* product : cartCopy) {
+        const std::string productName = product->getName();
 
         if (!data[productName]->getQty()) {
             // std::cout << "Product " << productName << " out of stock" << std::endl;
@@ -113,18 +112,22 @@ bool MyDataStore::buyCart(const std::string& username) {
             continue;
         }
         User* userPtr = users.find(username)->second;
-        if (userPtr->getBalance() < (*product_iterator)->getPrice()) {
+        if (userPtr->getBalance() < product->getPrice()) {
             // std::cout << "NO BALANCEEE " << productName << "." << std::endl;
             purchaseSuccessful = false;
             continue;
         }
 
         data[productName]->subtractQty(1);
-        userPtr->deductAmount((*product_iterator)->getPrice());
-        carts[username].erase(product_iterator);
+        userPtr->deductAmount(product->getPrice());
+        
+   
+        carts[username].erase(std::remove(carts[username].begin(), carts[username].end(), product), carts[username].end());
     }
+
     return purchaseSuccessful;
 }
+
 
 const map<string, User*>& MyDataStore::getUsers() {
     return users;

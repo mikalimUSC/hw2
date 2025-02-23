@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
                 vector<Product*> cart = ds.getCart(convToLower(username));
                 if(!cart.empty()){
                     for(size_t i = 0; i < cart.size(); ++i){
-                        cout << (i + 1) << " " << cart[i]->getName() << endl;
+                        cout << "Item " << i+ 1 << cart[i]->getName() << endl;
                     }
                 }
             }
@@ -153,6 +153,13 @@ int main(int argc, char* argv[])
     
         }
 
+    cout << "End of function, checking cart" << endl;
+    vector<Product*> cart = ds.getCart(convToLower("user"));
+    if(!cart.empty()){
+        for(size_t i = 0; i < cart.size(); ++i){
+                        cout << (i + 1) << " " << cart[i]->getName() << endl;
+        }
+    }
     return 0;
 } 
 

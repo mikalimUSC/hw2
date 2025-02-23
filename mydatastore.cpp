@@ -16,6 +16,7 @@ MyDataStore::~MyDataStore() {
 
 void MyDataStore::addProduct(Product* p) {
     data[p->getName()] = p;
+    products.push_back(p);
     for (const std::string& keyword : p->keywords()) {
         keys[keyword].insert(p->getName());
     }
@@ -89,34 +90,42 @@ std::vector<Product*> MyDataStore::getCart(const std::string& username) const {
     return carts.at(username);
 }
 
+
 bool MyDataStore::buyCart(const std::string& username) {
     if (carts.find(username) == carts.end()) {
-       // std::cout << "User cart not found." << std::endl;
         return false;
     }
-    for (const auto& productPtr : carts[username]) {  
-        const std::string productName = productPtr->getName();  // Get the product name
+
+    bool purchaseSuccessful = true;
+    
+    for (const auto& productPtr : carts[username]) {
+        const std::string productName = productPtr->getName(); 
         
         if (!data[productName]->getQty()) { 
-            // std::cout << "Product " << productName << " is out of stock." << std::endl;
-            return false;
+            // std::cout << "Product " << productName << "out of stock" << std::endl;
+            purchaseSuccessful = false;
+            continue;  
         }
-    }
+        User* userPtr = users.find(username)->second;
+        if (userPtr->getBalance() < productPtr->getPrice()) {
+            // std::cout << "NO BALANCEEE " << productName << "." << std::endl;
+            purchaseSuccessful = false;
+            continue;  
+        }
 
-    for (const auto& productPtr : carts[username]) {
-        const std::string productName = productPtr->getName();  // Get the product name
-        
-        data[productName]->subtractQty(1);  // Correct: use product name as the key
+  
+        data[productName]->subtractQty(1);  
+        userPtr->deductAmount(productPtr->getPrice());  
+        carts[username].erase(carts[username].begin());
     }
-    carts.erase(username);
-    return true;
+    return purchaseSuccessful;
 }
 
 
 void MyDataStore::dump(std::ostream& ofile) {
     ofile << "<products>\n";
-    for (auto& pair : data) {
-        pair.second->dump(ofile);
+    for (auto& pair : products) {
+        pair->dump(ofile);
     }
     ofile << "</products>\n";
 

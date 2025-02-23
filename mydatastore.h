@@ -28,6 +28,7 @@ public:
    std::vector<Product*> getCart(const std::string& username) const;
     bool buyCart(const std::string& username);
     void addToCart(const std::string& username, Product* product) ;
+    
     /**
      * Performs a search of products whose keywords match the given "terms"
      *  type 0 = AND search (intersection of results for each term) while
@@ -41,6 +42,7 @@ public:
     virtual void dump(std::ostream& ofile);
 
     private:
+   vector<Product*> products;// added to keep the FIFO order yay
     map<string,Product*> data; //key is the product name, value is the prodocut object itself
     map<string, set<string> > keys; //map key is the productname, value is the set contains all keywords
     map<string,User*> users;

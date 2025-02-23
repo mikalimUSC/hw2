@@ -35,7 +35,7 @@ public:
      *  type 1 = OR search (union of results for each term)
      */
     virtual std::vector<Product*> search(std::vector<std::string>& terms, int type);
-
+    const map<string, User*>& getUsers();
     /**
      * Reproduce the database file from the current Products and User values
      */

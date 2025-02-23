@@ -7,7 +7,7 @@ Data Abstraction & Problem Solving with C++
 Carrano and Henry
 book
 Great Men and Women of Troy
-19.50
+19.5
 5
 978-000000000-1
 Tommy Trojan
@@ -20,7 +20,7 @@ J. Crew
 movie
 Hidden Figures DVD
 17.99
-5
+1
 Drama
 PG
 movie

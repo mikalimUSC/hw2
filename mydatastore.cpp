@@ -121,6 +121,9 @@ bool MyDataStore::buyCart(const std::string& username) {
     return purchaseSuccessful;
 }
 
+const map<string, User*>& MyDataStore::getUsers(){
+    return users;
+}
 
 void MyDataStore::dump(std::ostream& ofile) {
     ofile << "<products>\n";

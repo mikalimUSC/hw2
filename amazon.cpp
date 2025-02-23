@@ -115,6 +115,16 @@ int main(int argc, char* argv[])
                     cout << "Invalid request" << endl;
                     continue;
                 }
+                username = convToLower(username);
+
+      
+                const map<string, User*>& users = ds.getUsers();
+
+                if (users.find(username) == users.end()) {
+                    cout << "Invalid request" << endl;
+                    continue;
+                }
+                cout << " afh" << endl;
                 hit_index = stoi(hit_index_str);
                 if(hit_index < 1 || hit_index > hits.size()){
                     cout << "Invalid request" << endl;
@@ -130,6 +140,14 @@ int main(int argc, char* argv[])
                     cout << "Invalid request" << endl;
                     continue;
                 }
+              username = convToLower(username);
+
+
+                const map<string, User*>& users = ds.getUsers();
+                if (users.find(username) == users.end()) {
+                    cout << "Invalid username" << endl;
+                    continue;
+                }
                 vector<Product*> cart = ds.getCart(convToLower(username));
                 if(!cart.empty()){
                     for(size_t i = 0; i < cart.size(); ++i){
@@ -142,6 +160,14 @@ int main(int argc, char* argv[])
                 string username;
                 if(!(ss >> username)){
                     cout << "Invalid request" << endl;
+                    continue;
+                }
+                username = convToLower(username);
+
+
+                const map<string, User*>& users = ds.getUsers();
+                if (users.find(username) == users.end()) {
+                    cout << "Invalid username" << endl;
                     continue;
                 }
                 ds.buyCart(convToLower(username));
